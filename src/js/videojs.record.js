@@ -12,6 +12,7 @@ import RecordCanvas from './controls/record-canvas';
 import DeviceButton from './controls/device-button';
 import CameraButton from './controls/camera-button';
 import RecordToggle from './controls/record-toggle';
+import RecordPause from './controls/record-pause';
 import RecordIndicator from './controls/record-indicator';
 import PictureInPictureToggle from './controls/picture-in-picture-toggle';
 
@@ -127,6 +128,10 @@ class Record extends Plugin {
         player.recordToggle = new RecordToggle(player, options);
         player.recordToggle.hide();
 
+        // add record pause button
+        player.recordPause = new RecordPause(player, options);
+        player.recordPause.hide();
+        
         // picture-in-picture
         let oldVideoJS = videojs.VERSION === undefined || compareVersion(videojs.VERSION, '7.6.0') === -1;
         if (!('pictureInPictureEnabled' in document)) {
@@ -148,7 +153,7 @@ class Record extends Plugin {
         // exclude custom UI elements
         if (this.player.options_.controlBar) {
             let customUIElements = ['deviceButton', 'recordIndicator',
-                'cameraButton', 'recordToggle'];
+                'cameraButton', 'recordToggle', 'recordPause'];
             if (player.pipToggle) {
                 customUIElements.push('pipToggle');
             }
@@ -247,6 +252,7 @@ class Record extends Plugin {
             this.player.controlBar.el().firstChild);
         this.player.controlBar.el().insertBefore(
             this.player.recordToggle.el(),
+            this.player.recordPause.el(),
             this.player.controlBar.el().firstChild);
 
         // picture-in-picture
@@ -766,6 +772,7 @@ class Record extends Plugin {
 
             // show record button
             this.player.recordToggle.show();
+            this.player.recordPause.show();
         } else {
             // disable record indicator
             this.player.recordIndicator.disable();
@@ -1478,6 +1485,7 @@ class Record extends Plugin {
 
         // hide record button
         this.player.recordToggle.hide();
+        this.player.recordPause.hide();
 
         // loadedmetadata resets the durationDisplay for the
         // first time
@@ -1999,11 +2007,12 @@ class Record extends Plugin {
 
 // version nr is injected during build
 Record.VERSION = __VERSION__;
-
+console.log(__VERSION__);
 // register plugin
 videojs.Record = Record;
 if (videojs.getPlugin('record') === undefined) {
     videojs.registerPlugin('record', Record);
+    console.log("registered");
 }
 
 // export plugin

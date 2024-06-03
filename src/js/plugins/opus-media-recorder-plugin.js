@@ -85,6 +85,13 @@ class OpusMediaRecorderEngine extends RecordEngine {
         this.engine.stop();
     }
 
+    pause() {
+        this.engine.pause();
+    }
+
+    resume() {
+        this.engine.resume();
+    }
     /**
      * @private
      * @param {Object} event - ondataavailable responded with data object.
